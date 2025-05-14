@@ -1,0 +1,1 @@
+<a href="#" data-id="{{ $data->id}}" class="btn btn-danger me-2 btn-sm tombol-hapus">Del</a>
