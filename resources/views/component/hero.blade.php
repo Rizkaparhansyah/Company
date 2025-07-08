@@ -59,7 +59,7 @@
             <!-- Button trigger modal -->
             {{-- notif --}}
             <div class="alert alert-success d-none"></div>
-
+            <div class="btn btn-primary btn-sm" id="addHero">Tambah</div>
             <table class="table" id="hero">
               <thead>
                 <tr>
@@ -79,4 +79,7 @@
     </div>
 </div>
 
+@endsection
+@section('script')
+  @include('script.scriptHero')
 @endsection

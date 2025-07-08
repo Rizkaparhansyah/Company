@@ -40,6 +40,12 @@
        });
     });
 
+    $(document).on('click', '#addCard', function(e) {
+        e.preventDefault();
+        $('#data_id').val(''); 
+        $('#exampleModal1').modal('show');
+    })
+
 //edit data
    $('body').on('click', '.tombol-edit', function(e) {
        var id = $(this).data('id');
@@ -53,6 +59,7 @@
            success: function(response) {
                console.log(response.result.name_services);
                $('#exampleModal1').modal('show');
+               $('#data_id').val(response.result.id);
                $('#name_services').val(response.result.name_services);
                $('#description_services').val(response.result.description_services);
                $('#link_services').val(response.result.link_services);
@@ -66,46 +73,62 @@
 
 
 // function edit data 
-   function servicesCard(id) {        
-           $.ajax({
-               url: 'servicesAjax/' + id,
-               type: 'PUT',
-               data: {
-                   name_services: $('#name_services').val(),
-                   description_services: $('#description_services').val(),
-                   link_services: $('#link_services').val(),
-                   "_token": "{{ csrf_token() }}",
-               },
-               
-               headers: {
-                    'X-CSRF-TOKEN':token,
-                }, 
-               success: function(response) {
-                   if (response.errors) {
-                       $('.alert-danger').removeClass('d-none');
-                       $('.alert-danger').html("<ul>");
-                       $.each(response.errors, function(key, value) {
-                           $('.alert-danger').find('ul').append("<li>" + value +
-                               "</li>");
-                       });
-                       $('.alert-danger').append("</ul>");
-                    } else {
-                        setTimeout(function() {
-                            $('.alert-success').removeClass('d-none');
-                            $('.alert-success').html(response.success);
-                            setTimeout(function() {
-                                $('.alert-success').addClass('d-none');
-                            }, 2500);
-                        }, 500);
-                        $('#exampleModal1').modal('hide')
-                    }
-                    $('#services').DataTable().ajax.reload();
-               }
-           });
-        }
+
+
+//post
+$('#servicesCard').on('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const response = await postAPI(`servicesAjax`, formData);
+    if (response.errors) {
+        console.log(response.errors);
+        $('.alert-danger').removeClass('d-none');
+        $('.alert-danger').html("<ul>");
+        $.each(response.errors, function(key, value) {
+            $('.alert-danger').find('ul').append("<li>" + value +
+                "</li>");
+        });
+        $('.alert-danger').append("</ul>");
+    } else {
+    setTimeout(function() {
+            $('.alert-success').removeClass('d-none');
+            $('.alert-success').html(response.success);
+            setTimeout(function() {
+                $('.alert-success').addClass('d-none');
+            }, 2500);
+        }, 500);
+        $('#exampleModal1').modal('hide')
+    }
+    $('#data_id').val('');  
+    
+    $(this)[0].reset();
+    $('#services').DataTable().ajax.reload();
+
+});
+
+//del 
+
+ $(document).on('click', '.tombol-del', function(e) {
+    if (confirm('Yakin mau hapus data ini?') === true) {
+        var id = $(this).data('id');
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN':token,
+            }, 
+            url: 'servicesAjax/' + id,
+            type: 'DELETE',
+            "_token": "{{ csrf_token() }}",
+        });
+        $('#services').DataTable().ajax.reload();
+    } 
+});
+
+
 // hide value
    $('#exampleModal1').on('hidden.bs.modal', function() {
        $('.alert-danger').addClass('d-none');
+        $('#data_id').val('');  
        $('.alert-danger').html('');
        $('.alert-success').addClass('d-none');
        $('.alert-success').html('');

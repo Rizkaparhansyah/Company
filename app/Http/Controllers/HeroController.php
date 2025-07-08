@@ -43,7 +43,42 @@ class HeroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasi = Validator::make(
+            $request->all(),
+            [
+                'name_brand' => 'required',
+                'sosmed_whatsapp' => 'required',
+                'sosmed_instagram' => 'required',
+                'sosmed_facebook' => 'required',
+            ],
+            [
+                'name_brand.required' => ' Nama Brand Wajib Di Isi',
+                'sosmed_whatsapp.required' => ' No Whatsapp Wajib Di Isi',
+                'sosmed_instagram.required' => 'Link instagram Wajib Di Isi',
+                'sosmed_facebook.required' => 'Link facebook Wajib Di Isi',
+            ]
+        );
+
+        if ($validasi->fails()) {
+            return response()->json(['errors' => $validasi->errors()]);
+        } else {
+
+            $data = [
+                'name_brand' => $request->name_brand,
+                'sosmed_whatsapp' => $request->sosmed_whatsapp,
+                'sosmed_instagram' => $request->sosmed_instagram,
+                'sosmed_facebook' => $request->sosmed_facebook,
+
+            ];
+            $hero = Hero::first();
+
+            if ($hero) {
+                $hero->update($data); // update jika ada
+            } else {
+                Hero::create($data); // create jika belum ada
+            }
+
+        }
     }
 
     /**
@@ -119,6 +154,7 @@ class HeroController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Hero::where('id', $id)->delete();
+         return response()->json(['success' => "Berhasil"]);
     }
 }

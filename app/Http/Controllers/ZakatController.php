@@ -61,13 +61,18 @@ class ZakatController extends Controller
         if ($validasi->fails()) {
             return response()->json(['errors' => $validasi->errors()]);
         } else {
-            $inspirasi = new Zakat();
-            $inspirasi->nama_donatur = $request->nama;
-            $inspirasi->tipe_zakat = $request->tipe_zakat;
-            $inspirasi->nik = $request->nik;
-            $inspirasi->jml_donasi = $request->jml_donasi;
-            $inspirasi->save();
-            return response()->json(['success' => "Berhasil Melakukan Tambah Data"]);
+            
+            
+            $data = [
+                'nama_donatur' => $request->nama,
+                'tipe_zakat' => $request->tipe_zakat,
+                'nik' => $request->nik,
+                'jml_donasi' => $request->jml_donasi,
+            ];
+
+            Zakat::updateOrCreate(['id' => $request->data_id],$data);
+            return response()->json(['success' => "Berhasil"]);
+       
         }
     }
 

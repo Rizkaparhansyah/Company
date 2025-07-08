@@ -20,52 +20,52 @@
                     
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                  <form id="formCampign" enctype="multipart/form-data">
                   <div class="modal-body">
-                   
+                    
                      <div class="alert alert-danger d-none"></div>
                       <div class="form-group row">
+                        <input type="hidden" class="form-control" name="id_data" id="id_data">
                         <label for="" class="col-sm-3 col-form-label">Image</label>
                         <div class="col-sm-9">
-                          <input type="file" class="form-control"   onchange="encodeImageCampignFileAsURL(this)" name="image_campign" id="image_campign" placeholder="Masukan Gambar campign">
+                          <input type="file" class="form-control" name="image_campign" id="image_campign" placeholder="Masukan Gambar campign">
                         
-                          <input type="hidden" id="nama_file_image-korban" value="">
-                          <input type="hidden" id="base64_image-korban" value="">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Keluhan</label>
                         <div class="col-sm-9">
-                            <input type="text" id="keluhan" class="form-control">
+                            <input type="text" id="keluhan" name="keluhan" class="form-control">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Perusahaan</label>
                         <div class="col-sm-9">
-                            <input type="text" id="perusahaan" class="form-control">
+                            <input type="text" id="perusahaan" name="perusahaan" class="form-control">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Target Uang </label>
                         <div class="col-sm-9">
-                            <input type="text" id="target_uang" class="form-control">
+                            <input type="text" id="target_uang" name="target_uang" class="form-control">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Uang Terkumpul</label>
                         <div class="col-sm-9">
-                            <input type="text" id="terkumpul" class="form-control">
+                            <input type="text" id="terkumpul" name="terkumpul" class="form-control">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Waktu Mulai Donasi</label>
                         <div class="col-sm-9">
-                            <input type="date" id="waktu_mulai_donasi" class="form-control">
+                            <input type="date" id="waktu_mulai_donasi" name="waktu_mulai_donasi" class="form-control">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Target Waktu</label>
                         <div class="col-sm-9">
-                            <input type="date" id="target-waktu" class="form-control">
+                            <input type="date" id="target_waktu" name="target_waktu" class="form-control">
                         </div>
                       </div>
                 </div>
@@ -74,6 +74,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="simpanCampign">Save</button>
                   </div>
+                  </form>
                 </div>
               </div>
             
@@ -92,7 +93,7 @@
                      
             
           
-            <table class="table" id="campign-table">
+            <table class="table w-100" id="campign-table">
               <thead>
                 <tr>
                   <th>NO</th>
@@ -114,4 +115,7 @@
     </div>
 </div>
 
+@endsection
+@section('script')
+  @include('script.scriptCampign')
 @endsection

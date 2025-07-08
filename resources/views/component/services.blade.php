@@ -22,19 +22,21 @@
                     
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                  <form id="formServicesBrand">
                   <div class="modal-body">
                      <div class="alert alert-danger d-none"></div>
                     
                   <div class="form-group row">
                     <label for="fasilitas" class="col-sm-3 col-form-label">Services Brand</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="service" placeholder="Masukan Nama Service">
+                      <input type="hidden" class="form-control" id="data_id"  name="data_id" placeholder="Masukan Nama Service">
+                      <input type="text" class="form-control" id="service"  name="service" placeholder="Masukan Nama Service">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="harga" class="col-sm-3 col-form-label">Deskripsi</label>
                     <div class="col-sm-9">
-                      <textarea class="form-control" id="description" cols="30" rows="10"></textarea>
+                      <textarea class="form-control" id="description"  name="description" cols="30" rows="10"></textarea>
                     </div>
                   </div>
                   
@@ -43,8 +45,9 @@
                    
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="simpanServices">Save</button>
+                    <button type="submit" class="btn btn-primary" id="simpanServices">Save</button>
                   </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -52,7 +55,7 @@
             <!-- Button trigger modal -->
             {{-- notif --}}
             <div class="alert alert-success d-none"></div>
-
+            <button class="btn btn-sm btn-primary" id="addBrand">Tambah</button>
             <table class="table" id="servicesBrand">
               <thead>
                 <tr>
@@ -70,4 +73,7 @@
     </div>
 </div>
 
+@endsection
+@section('script')
+     @include('script.scriptServicesBrand')
 @endsection

@@ -19,9 +19,10 @@
                 {
                     data: 'image',
                     name: 'image',
-                    render: function(data, type, full, meta){
-                            return "<img src={{ URL::to('/storage/images') }}"+'/' + data + " width='50' />";
-                            }
+                   render: function(data, type, full, meta){
+                        return "<img src='{{ asset('storage/images') }}/" + encodeURIComponent(data) + "' width='50'/>";
+                    }
+
                 },
                 {
                     data: 'description',
@@ -34,20 +35,6 @@
             ],
         });
     });
-
-
-// endcode image
-        function encodeImageFileAsURL(element) {
-            var file = element.files[0];
-            //   console.log(file.name);
-            var reader = new FileReader();
-            reader.onloadend = function() {
-                console.log('RESULT', reader.result)
-                $('#base64').val(reader.result);
-                $('#nama_file').val(file.name);
-            }
-            reader.readAsDataURL(file);
-        }
 
 //tambah data
         $('body').on('click', '.tambah-data', function(e) {
@@ -70,64 +57,46 @@
                 }, 
                 success: function(response) {
                     $('#exampleModal5').modal('show');
-                    $('#description-berita').val(response.result.description);
-                    $('#simpanBerita').click(function(e){
-                            berita(id)
-                    }
-                    )
+                    $('#data_id').val(response.result.id);
+                    $('#image').val(response.result.image);
+                    $('#description').val(response.result.description);
+                    
                 }
             })
         });
 
 
-//function simpan dan edit                   
-   function berita(id = '') {
-    if (id == '') {
-            var var_url = 'beritaAjax';
-            var var_type = 'POST';
-        } else {
-            var var_url = 'beritaAjax/' + id;
-            var var_type = 'PUT';
-        }
-           $.ajax({
-            headers: {
-            'X-CSRF-TOKEN': token
-            },
-            url: var_url,
-            type: var_type,
-            data: {
-                nama_file:$('#nama_file').val(),
-                image: $('#base64').val(),
-                description: $('#description-berita').val(),
-                "_token": "{{ csrf_token() }}",
-            
-               },
-               success: function(response) {
-                console.log(response);
-                   if (response.errors) {
-                       console.log(response.errors);
-                       $('.alert-danger').removeClass('d-none');
-                       $('.alert-danger').html("<ul>");
-                       $.each(response.errors, function(key, value) {
-                           $('.alert-danger').find('ul').append("<li>" + value +
-                               "</li>");
-                       });
-                       $('.alert-danger').append("</ul>");
-                   } else {
-                    setTimeout(function() {
-                            $('.alert-success').removeClass('d-none');
-                            $('.alert-success').html(response.success);
-                            setTimeout(function() {
-                                $('.alert-success').addClass('d-none');
-                            }, 2500);
-                        }, 500);
-                        $('#exampleModal5').modal('hide')
-                   }
-                   $('#berita-table').DataTable().ajax.reload();
-               }
-           });
-       }
 
+//post
+$('#formBerita').on('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const response = await postAPI(`beritaAjax`, formData);
+    if (response.errors) {
+        console.log(response.errors);
+        $('.alert-danger').removeClass('d-none');
+        $('.alert-danger').html("<ul>");
+        $.each(response.errors, function(key, value) {
+            $('.alert-danger').find('ul').append("<li>" + value +
+                "</li>");
+        });
+        $('.alert-danger').append("</ul>");
+    } else {
+    setTimeout(function() {
+            $('.alert-success').removeClass('d-none');
+            $('.alert-success').html(response.success);
+            setTimeout(function() {
+                $('.alert-success').addClass('d-none');
+            }, 2500);
+        }, 500);
+        $('#exampleModal5').modal('hide')
+    }
+    
+    $(this)[0].reset();
+    $('#berita-table').DataTable().ajax.reload();
+
+});
 
 //delete data
         $('body').on('click', '.tombol-del', function(e) {
@@ -148,7 +117,8 @@
 
 //hide value ketika tombol close di klik
         $('#exampleModal5').on('hidden.bs.modal', function() {
-            $('#description-berita').val('')
+            $('#description').val('')
+            $('#image').val('')
             $('.alert-danger').addClass('d-none');
             $('.alert-danger').html('');
             $('.alert-success').addClass('d-none');

@@ -61,28 +61,23 @@ class BeritaController extends Controller
         if ($validasi->fails()) {
             return response()->json(['errors' => $validasi->errors()]);
         } else {
-            $berita = new Berita;
-
-            if ($request->image != '') {
-                $folderPath = "storage/images/";
-                $image_parts = explode(";base64,", $request->image);
-                $image_base64 = base64_decode($image_parts[1]);
-                $image_name = $request->nama_file;
-                $file = $folderPath . $image_name;
-                file_put_contents($file, $image_base64);
-
-                $berita->image = $image_name;
-            } else {
-                $berita->image = null;
+            $imageName = null;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $imageName = $file->getClientOriginalName();
+                $file->storeAs('public/images', $imageName);
             }
 
+            // Simpan atau update data
+            $campign = Berita::updateOrCreate(
+                ['id' => $request->data_id], // kolom pencocokan, bisa diganti 'slug', 'kode', dll.
+                [
+                    'image' => $imageName,
+                    'description' => $request->description
+                ]);
 
-            $berita->description = $request->description;
 
-
-            $berita->save();
-
-            return response()->json(['success' => "Berhasil Melakukan Tambah Data"]);
+            return response()->json(['success' => "Berhasil"]);
         }
     }
 
@@ -118,40 +113,7 @@ class BeritaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validasi = Validator::make(
-            $request->all(),
-            [
-                'image' => 'required',
-                'description' => 'required',
-
-            ],
-            [
-                'image.required' => ' Image Wajib Di Isi',
-                'description.required' => ' Description Wajib Di Isi',
-            ]
-        );
-
-        if ($validasi->fails()) {
-            return response()->json(['errors' => $validasi->errors()]);
-        } else {
-            $berita = new Berita;
-            if ($request->image != '') {
-                $folderPath = "storage/images/";
-                $image_parts = explode(";base64,", $request->image);
-                $image_base64 = base64_decode($image_parts[1]);
-                $image_name = $request->nama_file;
-                $file = $folderPath . $image_name;
-                file_put_contents($file, $image_base64);
-
-                $berita->image = $image_name;
-            } else {
-                $berita->image = null;
-            }
-            $berita->description = $request->description;
-            $data = $berita->toArray();
-            Berita::where('id', $id)->update($data);
-            return response()->json(['success' => "Berhasil Melakukan Update Data"]);
-        }
+        
     }
 
     /**

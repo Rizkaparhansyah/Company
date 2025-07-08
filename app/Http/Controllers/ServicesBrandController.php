@@ -43,7 +43,32 @@ class ServicesBrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validasi = Validator::make(
+            $request->all(),
+            [
+                'service' => 'required',
+                'description' => 'required',
+
+            ],
+            [
+                'service.required' => 'Services Wajib Di Isi',
+                'description.required' => ' Deskripsi Wajib Di Isi',
+            ]
+        );
+
+        if ($validasi->fails()) {
+            return response()->json(['errors' => $validasi->errors()]);
+        } else {
+
+            $data = [
+                'service' => $request->service,
+                'description' => $request->description,
+
+            ];
+
+            ServicesBrand::updateOrCreate(['id' => 1],$data);
+            return response()->json(['success' => "Berhasil"]);
+        }
     }
 
     /**
@@ -78,32 +103,7 @@ class ServicesBrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validasi = Validator::make(
-            $request->all(),
-            [
-                'service' => 'required',
-                'description' => 'required',
-
-            ],
-            [
-                'service.required' => 'Services Wajib Di Isi',
-                'description.required' => ' Deskripsi Wajib Di Isi',
-            ]
-        );
-
-        if ($validasi->fails()) {
-            return response()->json(['errors' => $validasi->errors()]);
-        } else {
-
-            $data = [
-                'service' => $request->service,
-                'description' => $request->description,
-
-            ];
-
-            ServicesBrand::where('id', $id)->update($data);
-            return response()->json(['success' => "Berhasil Melakukan Update Data"]);
-        }
+       
     }
 
     /**
@@ -114,6 +114,8 @@ class ServicesBrandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ServicesBrand::where('id', $id)->delete();
+        return response()->json(['success' => "Berhasil"]);
+   
     }
 }

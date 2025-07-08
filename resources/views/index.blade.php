@@ -69,16 +69,29 @@
                 }, 
             }
         )
+         function postAPI(url, data, method = 'POST') {
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                url: url, // ganti sesuai route Laravel kamu
+                type: method,
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    resolve(response);
+                },
+                error: function (xhr) {
+                    reject(xhr);
+                }
+                });
+            });
+        }
     </script>
-     @include('script.scriptHero');
-     @include('script.scriptServices');
-     @include('script.scriptServicesBrand');
-     @include('script.scriptBerita');
-     @include('script.scriptInspirasi');
-     @include('script.scriptMessage');
-     @include('script.scriptProfile');
-     @include('script.scriptCampign');
-     @include('script.scriptZakat');
+    
+    @yield('script')
+     {{-- 
+     @include('script.scriptProfile')
+      --}}
 </body>
 
 </html>

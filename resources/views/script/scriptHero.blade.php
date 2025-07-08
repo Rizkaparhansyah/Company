@@ -49,6 +49,43 @@
        });
    });
 
+    $('#simpanHero').click(function() {
+        hero()
+    })
+    $(document).on('click','.tombol-del', (function() {
+        var id = $(this).data('id');
+        $.ajax({
+            url: `heroAjax/${id}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': token
+            },
+            "_token": "{{ csrf_token() }}",
+           
+            success: function(response) {
+                if (response.errors) {
+                    console.log(response.errors);
+                    $('.alert-danger').removeClass('d-none');
+                    $('.alert-danger').html("<ul>");
+                    $.each(response.errors, function(key, value) {
+                        $('.alert-danger').find('ul').append("<li>" + value +
+                            "</li>");
+                    });
+                    $('.alert-danger').append("</ul>");
+                } else {
+                setTimeout(function() {
+                        $('.alert-success').removeClass('d-none');
+                        $('.alert-success').html(response.success);
+                        setTimeout(function() {
+                            $('.alert-success').addClass('d-none');
+                        }, 2500);
+                    }, 500);
+                    $('#exampleModal3').modal('hide')
+                }
+                $('#hero').DataTable().ajax.reload();
+            }
+        });
+    }))
 
 //edit data
    $('body').on('click', '.tombol-edit', function(e) {
@@ -66,19 +103,20 @@
                $('#sosmed_whatsapp').val(response.result.sosmed_whatsapp);
                $('#sosmed_instagram').val(response.result.sosmed_instagram);
                $('#sosmed_facebook').val(response.result.sosmed_facebook);
-               $('#simpanHero').click(function() {
-                   hero(id)
-               })
+               
            }
        })
    });
+   $('body').on('click', '#addHero', function(e) {
+        $('#exampleModal3').modal('show');
+   });
 
 // function edit data 
-   function hero(id) {
+   function hero(url) {
            $.ajax({
             
-               url: 'heroAjax/' + id,
-               type: 'PUT',
+               url: 'heroAjax',
+               type: 'POST',
                headers: {
                     'X-CSRF-TOKEN': token
                 },
@@ -88,8 +126,7 @@
                    sosmed_facebook: $('#sosmed_facebook').val(),
                    sosmed_instagram: $('#sosmed_instagram').val(),
                    sosmed_whatsapp: $('#sosmed_whatsapp').val(),
-                   "_token": "{{ csrf_token() }}",
-                id: id,
+                   "_token": "{{ csrf_token() }}"
                },
                
                success: function(response) {
@@ -126,4 +163,6 @@
        $('.alert-success').addClass('d-none');
        $('.alert-success').html('');
    });
+
+
 </script>

@@ -59,27 +59,32 @@ class InspirasiController extends Controller
         if ($validasi->fails()) {
             return response()->json(['errors' => $validasi->errors()]);
         } else {
-            $inspirasi = new Inspirasi;
-
-            if ($request->image_inspirasi != '') {
-                $folderPath = "storage/images/";
-                $image_parts = explode(";base64,", $request->image_inspirasi);
-                $image_base64 = base64_decode($image_parts[1]);
-                $image_name = $request->nama_file_inspirasi;
-                $file = $folderPath . $image_name;
-                file_put_contents($file, $image_base64);
-
-                $inspirasi->image_inspirasi = $image_name;
-            } else {
-                $inspirasi->image_inspirasi = null;
+            
+            $inspirasi = Inspirasi::get();
+            if(!$request->data_id){
+                if ($inspirasi->count() > 3) {
+                    return response()->json(['errors' => ["Maksimal 4 data"]]);
+                }
             }
+            $imageName = null;
+                if ($request->hasFile('image_inspirasi')) {
+                    $file = $request->file('image_inspirasi');
+                    $imageName = $file->getClientOriginalName();
+                    $file->storeAs('public/images', $imageName);
+                }
 
-            $inspirasi->description_inspirasi = $request->description_inspirasi;
+            $data = [
+                'image_inspirasi' => $imageName,
+                'description_inspirasi' => $request->description_inspirasi,
+            ];
 
+            Inspirasi::updateOrCreate(
+                ['id' => $request->data_id],
+                $data
+            );
 
-            $inspirasi->save();
+            return response()->json(['success' => "Berhasil"]);
 
-            return response()->json(['success' => "Berhasil Melakukan Tambah Data"]);
         }
     }
 

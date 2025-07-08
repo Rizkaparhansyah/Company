@@ -23,22 +23,23 @@
                     
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+
+                  <form id="inspirasiForm">
                   <div class="modal-body">
                    
                      <div class="alert alert-danger d-none"></div>
                       <div class="form-group row">
-                        <label for="image_inprasi" class="col-sm-3 col-form-label">Image</label>
+                        <label for="image_inspirasi" class="col-sm-3 col-form-label">Image</label>
                         <div class="col-sm-9">
-                          <input type="file" class="form-control image"   onchange="encodeImageInspirasiFileAsURL(this)" name="image_insprasi" id="image_insprasi" placeholder="Masukan Gambar Inspirasi">
+                          <input type="file" class="form-control image_inspirasi" name="image_inspirasi" id="image_inspirasi" placeholder="Masukan Gambar">
                         
-                          <input type="hidden" id="nama_file_inspirasi" value="">
-                          <input type="hidden" id="base64_inspirasi" value="">
+                          <input type="hidden" id="data_id" name="data_id" value="">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="harga" class="col-sm-3 col-form-label">Deskripsi Inpirasi</label>
                         <div class="col-sm-9">
-                          <textarea class="form-control description-berita" name="description-inspirasi"  id="description-inspirasi" cols="30" rows="10"></textarea>
+                          <textarea class="form-control description_inspirasi" name="description_inspirasi"  id="description_inspirasi" cols="30" rows="10"></textarea>
                         </div>
                       </div>
                 </div>
@@ -47,6 +48,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="simpanInspirasi">Save</button>
                   </div>
+                  </form>
                 </div>
               </div>
             
@@ -79,4 +81,8 @@
     </div>
 </div>
 
+@endsection
+@section('script')
+    
+     @include('script.scriptInspirasi')
 @endsection

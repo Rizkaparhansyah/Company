@@ -19,20 +19,21 @@
                     <div class="modal-header">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <form id="formBerita">
+                      <div class="modal-body">
                       <div class="alert alert-danger d-none"></div>
                         <div class="form-group row">
                           <label for="fasilitas" class="col-sm-3 col-form-label">Image</label>
                           <div class="col-sm-9">
-                            <input type="file" class="form-control image" onchange="encodeImageFileAsURL(this)" name="image" id="image-berita" placeholder="Masukan Gambar">
-                            <input type="hidden" id="nama_file" value="">
-                            <input type="hidden" id="base64" value="">
+                            <input type="hidden" id="data_id" name="data_id" class="form-control image" placeholder="Masukan Gambar">
+                            <input type="file" class="form-control image" id="image" name="image" placeholder="Masukan Gambar">
+                            
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="harga" class="col-sm-3 col-form-label">Deskripsi</label>
                           <div class="col-sm-9">
-                            <textarea class="form-control description-berita" name="description"  id="description-berita" cols="30" rows="10"></textarea>
+                            <textarea class="form-control description" name="description"  id="description" cols="30" rows="10"></textarea>
                           </div>
                         </div>
                     </div>
@@ -40,6 +41,9 @@
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-primary" id="simpanBerita">Save</button>
                     </div>
+                    
+                    </form>
+                    
                   </div>
                 </div>
               </div>
@@ -66,4 +70,7 @@
     </div>
 </div>
 
+@endsection
+@section('script')
+     @include('script.scriptBerita')
 @endsection

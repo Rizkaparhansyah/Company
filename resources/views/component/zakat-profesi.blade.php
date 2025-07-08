@@ -20,12 +20,13 @@
                     <div class="modal-title">FORM</div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                  <form id="zakatForm">
                   <div class="modal-body">
                      <div class="alert alert-danger d-none"></div>
                   <div class="form-group row">
                     <label for="fasilitas" class="col-sm-3 col-form-label">tipe_zakat</label>
                     <div class="col-sm-9">
-                      <select name="" class="form-control" id="tipe_zakat">
+                      <select class="form-control" id="tipe_zakat" name="tipe_zakat">
                         <option value="PROFESI">-- PILIH ZAKAT --</option>
                         <option value="PROFESI">PROFESI</option>
                         <option value="PERDAGANGAN">PERDAGANGAN</option>
@@ -35,29 +36,30 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="fasilitas" class="col-sm-3 col-form-label">NIK</label>
+                    <label for="fasilitas" class="col-sm-3 col-form-label">NIK(opsional)</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="NIK" placeholder="Masukan NIK Anda">
+                      <input type="text" class="form-control" id="nik" name="nik" placeholder="Masukan NIK Anda">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="harga" class="col-sm-3 col-form-label">NAMA</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="nama" placeholder="Masukan Nama Anda">
+                      <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukan Nama Anda">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="harga" class="col-sm-3 col-form-label">Jumlah Donasi</label>
                     <div class="col-sm-9">
-                      <input type="number" class="form-control" id="jml_donasi" placeholder="Masukan jml_donasi Anda" no-spin>
+                      <input type="number" class="form-control" name="jml_donasi" id="jml_donasi" placeholder="Masukan jml_donasi Anda" no-spin>
+                      <input type="hidden" class="form-control" name="data_id" id="data_id">
                     </div>
                   </div>
                 </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="simpanZakat">Save</button>
-                    <button type="button" class="btn btn-primary " id="editZakat" hidden>Save Edit</button>
+                    <button type="submit" class="btn btn-primary" id="simpanZakat">Save</button>
                   </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -86,4 +88,7 @@
     </div>
 </div>
 
+@endsection
+@section('script')
+    @include('script.scriptZakat')
 @endsection

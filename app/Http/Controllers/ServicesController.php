@@ -43,7 +43,48 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $validasi = Validator::make(
+            $request->all(),
+            [
+                'name_services' => 'required',
+                'description_services' => 'required',
+                'link_services' => 'required',
+
+            ],
+            [
+                'name_services.required' => ' Nama Services Wajib Di Isi',
+                'description_services.required' => ' Deskripsi Wajib Di Isi',
+                'link_services.required' => 'Link Wajib Di Isi',
+            ]
+        );
+
+        if ($validasi->fails()) {
+            return response()->json(['errors' => $validasi->errors()]);
+        } else {
+            // return ($id);
+
+            $services = Services::get();
+            if(!$request->data_id){
+                if ($services->count() > 2) {
+                    return response()->json(['errors' => ["Maksimal 3 data"]]);
+                }
+            }
+
+            $data = [
+                'name_services' => $request->name_services,
+                'description_services' => $request->description_services,
+                'link_services' => $request->link_services,
+            ];
+
+            Services::updateOrCreate(
+                ['id' => $request->data_id],
+                $data
+            );
+
+            return response()->json(['success' => "Berhasil"]);
+
+}
     }
 
     /**
@@ -78,36 +119,6 @@ class ServicesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validasi = Validator::make(
-            $request->all(),
-            [
-                'name_services' => 'required',
-                'description_services' => 'required',
-                'link_services' => 'required',
-
-            ],
-            [
-                'name_services.required' => ' Nama Services Wajib Di Isi',
-                'description_services.required' => ' Deskripsi Wajib Di Isi',
-                'link_services.required' => 'Link Wajib Di Isi',
-            ]
-        );
-
-        if ($validasi->fails()) {
-            return response()->json(['errors' => $validasi->errors()]);
-        } else {
-            // return ($id);
-
-            $data = [
-                'name_services' => $request->name_services,
-                'description_services' => $request->description_services,
-                'link_services' => $request->link_services,
-
-            ];
-
-            Services::where('id', $id)->update($data);
-            return response()->json(['success' => "Berhasil Melakukan Update Data"]);
-        }
     }
 
     /**
@@ -118,6 +129,6 @@ class ServicesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Services::where('id', $id)->delete();
     }
 }

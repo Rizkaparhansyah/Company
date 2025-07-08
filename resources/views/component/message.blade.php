@@ -28,3 +28,7 @@
 </div>
 
 @endsection
+@section('script')
+    
+     @include('script.scriptMessage')
+@endsection
