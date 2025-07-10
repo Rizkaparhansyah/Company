@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('campign', function (Blueprint $table) {
             $table->id();
+            $table->integer('order_id')->nullable();
             $table->string('target_unix')->nullable();
             $table->string('waktu_mulai_donasi')->nullable();
             $table->string('target_waktu')->nullable();

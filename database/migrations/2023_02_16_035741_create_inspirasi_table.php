@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('inspirasi', function (Blueprint $table) {
             $table->id();
-            $table->string('image_inspirasi');
-            $table->string('description_inspirasi');
+            $table->string('image_inspirasi')->nullable();
+            $table->string('description_inspirasi')->nullable();
             $table->timestamps();
         });
     }

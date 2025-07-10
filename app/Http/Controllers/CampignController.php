@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
 use App\Models\Campign;
+use DB;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +21,15 @@ class CampignController extends Controller
     
     public function index()
     {
-        $data = Campign::where('id', '!=', null);
+        $data = DB::table('campign')
+            ->leftJoin('transaksis', function($join) {
+                $join->on('campign.id', '=', 'transaksis.id_campign')
+                    ->where('transaksis.status', 'settlement'); // ⬅️ pindah ke sini
+            })
+            ->select('campign.*', DB::raw('SUM(transaksis.nominal) as terkumpul'))
+            ->groupBy('campign.id')
+            ->get();
+
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($data) {
@@ -53,7 +63,7 @@ class CampignController extends Controller
             'image_campign' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'keluhan' => 'required',
             'perusahaan' => 'required',
-            'terkumpul' => 'required|numeric',
+            // 'terkumpul' => 'required|numeric',
             'target_waktu' => 'required|date',
             'target_uang' => 'required|numeric',
             'waktu_mulai_donasi' => 'required|date',
@@ -62,7 +72,7 @@ class CampignController extends Controller
             'image_campign.required' => ' Image Wajib Di Isi',
             'keluhan.required' => ' Keluhan Wajib Di Isi',
             'perusahaan.required' => ' Perusahaan Wajib Di Isi',
-            'terkumpul.required' => ' Terkumpul Wajib Di Isi',
+            // 'terkumpul.required' => ' Terkumpul Wajib Di Isi',
             'target_waktu.required' => ' Target Waktu Wajib Di Isi',
             'target_uang.required' => ' Target Uang Wajib Di Isi',
         ]
@@ -125,9 +135,19 @@ class CampignController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $data = Campign::where('id', $id)->first();
-        return response()->json(['result' => $data]);
+    { 
+     $data = DB::table('campign')
+            ->leftJoin('transaksis', function($join) {
+                $join->on('campign.id', '=', 'transaksis.id_campign')
+                    ->where('transaksis.status', 'settlement');
+            })
+            ->select('campign.*', DB::raw('SUM(transaksis.nominal) as terkumpul'))
+            ->where('campign.id', $id)
+            ->groupBy('campign.id')
+            ->first();
+
+
+    return response()->json(['result' => $data]);
     }
 
     /**
@@ -139,56 +159,19 @@ class CampignController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $validasi = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'image' => 'required',
-        //         'keluhan' => 'required',
-        //         'perusahaan' => 'required',
-        //         'terkumpul' => 'required',
-        //         'target_waktu' => 'required',
-        //         'target_uang' => 'required',
-
-        //     ],
-        //     [
-        //         'image.required' => ' Image Wajib Di Isi',
-        //         'keluhan.required' => ' Keluhan Wajib Di Isi',
-        //         'perusahaan.required' => ' perusahaan Wajib Di Isi',
-        //         'terkumpul.required' => ' terkumpul Wajib Di Isi',
-        //         'target_waktu.required' => ' target waktu Wajib Di Isi',
-        //         'target_uang.target_waktu.required' => ' Target Uang Wajib Di Isi',
-        //     ]
-        // );
-
-        // if ($validasi->fails()) {
-        //     return response()->json(['errors' => $validasi->errors()]);
-        // } else {
-        $campign = new Campign;
-        // if ($request->image != '') {
-        //     $folderPath = "storage/images/";
-        //     $image_parts = explode(";base64,", $request->image);
-        //     $image_base64 = base64_decode($image_parts[1]);
-        //     $image_name = $request->image_name;
-        //     $file = $folderPath . $image_name;
-        //     file_put_contents($file, $image_base64);
-
-        //     $campign->image = $image_name;
-        // } else {
-        //     $campign->image = null;
-        // }
-
-        $campign->target_unix = strtotime($request->target_waktu);
-        $campign->image = $request->image;
-        $campign->waktu_mulai_donasi = $request->waktu_mulai_donasi;
-        $campign->keluhan = $request->keluhan;
-        $campign->target_uang = $request->target_uang;
-        $campign->perusahaan = $request->perusahaan;
-        $campign->terkumpul = $request->terkumpul;
-        $campign->target_waktu = $request->target_waktu;
+        // return response()->json(['success' => $request->all()]);
 
 
-        $data = $campign->toArray();
-        Campign::where('id', $id)->update($data);
+        Campign::where('id', $id)->update(['terkumpul' => $request->terkumpul]);
+        Transaksi::create([
+            'nominal' => $request->nominal,
+            'nama_donatur' => $request->nama_donatur,
+            'id_campign' => $id,
+        ]);
+
+
+
+
         return response()->json(['success' => "Berhasil Melakukan Update Data"]);
         // }
     }

@@ -73,11 +73,12 @@
               <thead>
                 <tr>
                   <th>NO</th>
+                  <th>ID Campign</th>
                   <th>Tipe Zakat</th>
                   <th>NIK</th>
                   <th>Nama</th>
-                  <th>Donasi</th>
-                  <th>Terkumpul</th>
+                  <th>Nominal</th>
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

@@ -106,13 +106,13 @@
        {{-- Zakat --}}
        <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#Zakat" aria-expanded="false" aria-controls="Zakat">
-            <span class="menu-title">Zakat</span>
+            <span class="menu-title">Transaksi</span>
             <i class="menu-arrow"></i>
             <i class="mdi mdi-message-text menu-icon"></i>
         </a>
         <div class="collapse" id="Zakat">
             <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ url('/zakat-profesi') }}">Zakat Profesi</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ url('/zakat-profesi') }}">List Transaksi</a></li>
             </ul>
         </div>
     </li>

@@ -16,6 +16,11 @@
                     searchable: false,
                 },
                 {
+                    data: 'id_campign',
+                    name: 'id_campign',
+                   
+                },
+                {
                     data: 'tipe_zakat',
                     name: 'tipe_zakat',
                    
@@ -30,12 +35,12 @@
                     name: 'nama_donatur',
                 },
                 {
-                    data: 'jml_donasi',
-                    name: 'jml_donasi',
+                    data: 'nominal',
+                    name: 'nominal',
                 },
                 {
-                    data: 'terkumpul',
-                    name: 'terkumpul',
+                    data: 'status',
+                    name: 'status',
                 },
                 {
                     data: 'aksi',

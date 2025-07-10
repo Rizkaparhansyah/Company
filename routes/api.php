@@ -7,6 +7,8 @@ use App\Http\Controllers\MessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PaymentController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,3 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('/zakatAjax', ZakatController::class);
 Route::resource('/campignAjax', CampignController::class);
 Route::post('/messageAjax', [MessageController::class, 'store']);
+Route::get('/donate', [PaymentController::class, 'index']);
+Route::post('/payment', [PaymentController::class, 'pay']);
+Route::post('/payment/notification', [PaymentController::class, 'notificationHandler']);

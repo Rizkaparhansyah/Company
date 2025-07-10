@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
 use App\Models\Zakat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,12 +17,22 @@ class ZakatController extends Controller
      */
     public function index()
     {
-        $data = Zakat::where('id', '!=', null);
+        $data = Transaksi::orderBy('id', 'desc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('aksi', function ($data) {
                 return view('button.buttonZakat')->with('data', $data);
             })
+            ->addColumn('status', function ($data) {
+                $view = '';
+                if($data->status == 'settlement'){
+                    $view = '<div class="badge badge-sm badge-success">Settlement</div>';
+                }else{
+                    $view = '<div class="badge badge-sm badge-danger">Batal</div>';
+                }
+                return $view;
+            })
+             ->rawColumns(['status']) 
             ->make(true);
     }
 
