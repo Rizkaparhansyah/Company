@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id')->nullable();
             $table->integer('id_campign')->nullable();
-            $table->integer('nik')->nullable();
+            $table->string('nik')->nullable();
             $table->string('nama_donatur')->nullable();
             $table->string('tipe_zakat')->nullable();
             $table->integer('nominal')->nullable();
