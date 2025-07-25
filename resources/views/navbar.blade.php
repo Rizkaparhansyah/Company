@@ -12,20 +12,21 @@
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="nav-profile-img">
-                        <img src="{{asset('/')}}assets/images/faces/face1.jpg" alt="image">
+                        <img src="{{asset('/')}}assets/images/faces-clipart/pic-2.png" alt="image">
                         <span class="availability-status online"></span>
                     </div>
                     <div class="nav-profile-text">
-                        <p class="mb-1 text-black">Rizka Parhansyah</p>
+                        <p class="mb-1 text-black">{{ Auth::user()->name }}</p>
                     </div>
                 </a>
                 <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
                     <div class="card card-img-holder text-white">
                         <div class="card-body">
                             <div class="nav-profile-img d-flex justify-content-center">
-                                <img src="{{asset('/')}}assets/images/faces/face1.jpg" width="100"  height="100" class="rounded-circle" alt="image">
+                                <img src="{{asset('/')}}assets/images/faces-clipart/pic-2.png" width="100"  height="100" class="rounded-circle" alt="image">
                             </div>
-                            <p class="mt-3 text-black">Rizka Parhansyah</p>
+                            <p class="mt-3 text-black">{{ Auth::user()->name }}</p>
+
                             <div class="d-flex justify-content-between mt-4">
                                 <a href="{{url('profile')}}">
                                     <button type="button" class="btn btn-gradient-primary btn-rounded btn-icon profile-user">
