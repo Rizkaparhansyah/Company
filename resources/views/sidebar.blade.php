@@ -36,13 +36,13 @@
         {{-- campign --}}
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-aa" aria-expanded="false" aria-controls="ui-aa">
-                <span class="menu-title">Campign</span>
+                <span class="menu-title">Campaign</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-account-box menu-icon"></i>
             </a>
             <div class="collapse" id="ui-aa">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ url('/campign') }}">Campign</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('/campign') }}">Campaign</a></li>
                 </ul>
             </div>
         </li>

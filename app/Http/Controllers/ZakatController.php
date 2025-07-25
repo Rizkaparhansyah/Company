@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
 use App\Models\Zakat;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
